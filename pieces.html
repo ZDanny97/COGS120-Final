@@ -74,19 +74,21 @@
       }
       var roster1 = document.getElementById('option1'); 
       var roster2 = document.getElementById('option2'); 
-      for(var i=1 ; i<=boats ; i++)
+      for(var i=1 ; i<=rowers ; i++)
       {
-          var name = snapshot.child("Boats").child(i).child('name').val();
-          var option1 = document.createElement("option");
-          var option2 = document.createElement("option");
-          option1.text = name;
-          option2.text = name;
-          option1.value = i;
-          option2.value = i;
-          roster1.add(option1);
-          roster2.add(option2);
-          document.getElementById("winner1").text=option1.text;
-          document.getElementById("winner2").text=option2.text;
+          var name = snapshot.child("Teammates").child(i).child('name').val();
+          if(name!=null){
+            var option1 = document.createElement("option");
+            var option2 = document.createElement("option");
+            option1.text = name;
+            option2.text = name;
+            option1.value = i;
+            option2.value = i;
+            roster1.add(option1);
+            roster2.add(option2);
+            document.getElementById("winner1").text=option1.text;
+            document.getElementById("winner2").text=option2.text;
+          }
       }
     });
 
@@ -180,8 +182,6 @@ function winner1(){
       Nref.transaction(function(boats) {
         return (boats || 0) + 1;
       });
-
-
   window.location.replace("pieces.html");
 }
 
@@ -208,8 +208,6 @@ function winner2(){
       Nref.transaction(function(boats) {
         return (boats || 0) + 1;
       });
-
-
   window.location.replace("pieces.html");
 }
 
@@ -236,8 +234,6 @@ function draw(){
       Nref.transaction(function(boats) {
         return (boats || 0) + 1;
       });
-
-
   window.location.replace("pieces.html");
 }
 </script>
