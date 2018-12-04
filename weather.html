@@ -1,0 +1,55 @@
+<HTML LANG="es">
+<HEAD>
+  <div style="background: darkgray;">
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
+    <a href="profile.html"><img id="profile" src="" width="15%" class="right"></a>
+  </div>
+</HEAD>
+<BODY style="background: lightgray;"> 
+        
+        <a href="http://portal.hdontap.com/s/embed/?stream=catamaran-ptz_eh-CUST&amp;ratio=16:9"><img style="position: relative; margin:0 auto; display: block; padding-top:2%;" src="Images/camera.jpg" width="30%" class="center"></a>  
+        <div style="width: 100%;"><iframe style="display: block;" src="https://cdnres.willyweather.com/widget/loadView.html?id=98152" width="100%" height="520" frameborder="0"  scrolling="no"></iframe><a style="z-index: 1;margin: -20px 0 0 0;text-indent: -9999em;display: block;position: relative;height: 20px" href="https://www.willyweather.com/ca/san-diego-county/san-diego.html" rel="nofollow">san diego weather</a></div>
+        <div style="width: 100%;"><iframe style="display: block;" src="https://cdnres.willyweather.com/widget/loadView.html?id=98153" width="100%" height="520" frameborder="0"  scrolling="no"></iframe><a style="height: 20px;display: block;margin: -20px 0 0 0;text-indent: -9999em;z-index: 1;position: relative" href="https://www.willyweather.com/ca/san-diego-county/san-diego.html" rel="nofollow">Wind report San Diego</a></div>
+        <div style="width: 100%;"><iframe style="display: block;" src="https://cdnres.willyweather.com/widget/loadView.html?id=98155" width="100%" height="520" frameborder="0"  scrolling="no"></iframe><a style="height: 20px;display: block;position: relative;text-indent: -9999em;z-index: 1;margin: -20px 0 0 0" href="https://www.willyweather.com/ca/san-diego-county/san-diego.html" rel="nofollow">san diego weekly forecast</a></div>
+  
+</BODY>
+<FOOTER>
+  <div id="bottombuttons" style="background: darkgray;">
+    <div class="row">
+      <div class="column">
+         <a href="Index.html"><img src="Images/home.png" width="50%" class="center"><label id="bottomtext">Home</label></a>
+      </div>
+      <div class="column">
+         <a href="roster.html"><img src="Images/people.png" width="50%" class="center"><label id="bottomtext">Roster</label></a>
+      </div>
+      <div class="column">
+         <a href="pieces.html"><img src="Images/timer.png" width="50%" class="center"><label id="bottomtext">Pieces</label></a>
+      </div>
+      <div class="column">
+         <a href="calendar.html"><img src="Images/calendar.png" width="50%" class="center"><label id="bottomtext">Calendar</label></a>
+      </div>
+      <div class="column">
+         <a href="weather.html"><img src="Images/weather.png" width="50%" class="center"><label id="bottomtext">Weather</label></a>
+      </div>
+    </div>
+    <hr> 
+</FOOTER> 
+<script>
+var user = window.sessionStorage.getItem('user');
+
+if(user != null){
+  if (user  == "Coach"){
+        document.getElementById("profile").src = "Images/C.png";
+      }
+      else{
+        document.getElementById("profile").src = "Images/profile.png";
+      }
+}
+else{
+  window.location = "profile.html";
+  document.getElementById("profile").src = "Images/user.png";
+}
+</script>
+</HTML>

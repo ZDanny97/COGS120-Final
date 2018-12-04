@@ -1,0 +1,152 @@
+<HTML LANG="es">
+<HEAD>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <div style="background: darkgray;">
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="UTF-8"/>
+    <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
+    <a href="profile.html"><img id="profile" src="" width="15%" class="right"></a>
+  <hr>
+  </div>
+</HEAD>
+<BODY style="background: lightgray;"> 
+  <h1>Roster</h1>
+  <div id="container">
+  <div id="buttons">
+  <button id="add" onclick="add()">Add</button>
+  </div>
+  <ul id="roster" style="list-style: none;">
+  </ul>
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyC4yRQTqH8kprU56QhfVq0e5Yp6NXmzBrw",
+      authDomain: "b-a-b-7bbf8.firebaseapp.com",
+      databaseURL: "https://b-a-b-7bbf8.firebaseio.com",
+      projectId: "b-a-b-7bbf8",
+      storageBucket: "b-a-b-7bbf8.appspot.com",
+      messagingSenderId: "170330985238"
+    };
+    firebase.initializeApp(config); 
+    
+    var user = window.sessionStorage.getItem('user');
+
+    if(user != null){
+      if (user  == "Coach"){
+            document.getElementById("profile").src = "Images/C.png";
+          }
+          else{
+            document.getElementById("profile").src = "Images/profile.png";
+            document.getElementById("add").style.display="none";
+          }
+    }
+    else{
+      document.getElementById("profile").src = "Images/user.png";
+      document.getElementById("add").style.display="none";
+    }
+
+    var Ref = firebase.database().ref().child("Tritons");
+
+      Ref.on('value',function(snapshot){
+      var rowers = snapshot.child('Rowers/count').val();
+
+       for (var i = 1; i <= rowers; i++) {
+
+           
+           var name = snapshot.child("Teammates").child(i).child('name').val();
+           if(name != null){
+           var color = snapshot.child("Teammates").child(i).child('color').val();
+           var height = snapshot.child("Teammates").child(i).child('height').val();
+           var weight = snapshot.child("Teammates").child(i).child('weight').val();
+           var k2 = snapshot.child("Teammates").child(i).child('k2').val();
+           var rank = snapshot.child("Teammates").child(i).child('rank').val();
+           var year = snapshot.child("Teammates").child(i).child('year').val();
+           var node = document.createTextNode(name + " " + year + "/" + height + "/ "+ weight+" ");
+           var para = document.createElement("li");
+           var lf=document.createElement('br');
+           para.appendChild(lf);    
+           para.appendChild(node);
+           para.setAttribute("id",i);
+           if(user  == "Coach"){
+           var button = document.createElement("button");
+           button.innerHTML = "Edit";
+           button.value=i;
+           button.setAttribute("onClick","edit(this.value)")
+           para.appendChild(button);
+           }
+           var element = document.getElementById("roster");
+           element.appendChild(para); 
+
+           
+           if(color == "lb"){
+              document.getElementById(i).style.background= "lightblue";
+           }
+           else{
+            if(color == "b"){
+               document.getElementById(i).style.background= "blue";
+            }
+            else{
+              if(color == "g"){
+                 document.getElementById(i).style.background= "lightgreen";
+              }
+              else{
+                 document.getElementById(i).style.background= "red";
+              }
+            }
+           }
+         }
+        };
+    });
+    
+</script>  
+</div>
+</BODY>
+<FOOTER>
+  <div id="bottombuttons" style="background: darkgray;">
+    <div class="row">
+      <div class="column">
+         <a href="Index.html"><img src="Images/home.png" width="50%" class="center"><label id="bottomtext">Home</label></a>
+      </div>
+      <div class="column">
+         <a href="roster.html"><img src="Images/people.png" width="50%" class="center"><label id="bottomtext">Roster</label></a>
+      </div>
+      <div class="column">
+         <a href="pieces.html"><img src="Images/timer.png" width="50%" class="center"><label id="bottomtext">Pieces</label></a>
+      </div>
+      <div class="column">
+         <a href="calendar.html"><img src="Images/calendar.png" width="50%" class="center"><label id="bottomtext">Calendar</label></a>
+      </div>
+      <div class="column">
+         <a href="weather.html"><img src="Images/weather.png" width="50%" class="center"><label id="bottomtext">Weather</label></a>
+      </div>
+    </div>
+    <hr> 
+</FOOTER>
+
+<script>
+
+if(user != null){
+  if (user  == "Coach"){
+        document.getElementById("profile").src = "Images/C.png";
+      }
+      else{
+        document.getElementById("profile").src = "Images/profile.png";
+      }
+}
+else{
+  window.location = "profile.html";
+  document.getElementById("profile").src = "Images/user.png";
+}
+
+  function add(){
+  window.location="add-rower.html";
+  }
+
+  function edit(val){
+
+    window.sessionStorage.setItem('rower', val);
+    window.location="edit-rower.html";
+  }
+</script>
+</HTML>

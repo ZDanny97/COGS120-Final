@@ -1,0 +1,125 @@
+<HTML LANG="es">
+<HEAD>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <LINK REL="stylesheet" TYPE="text/css" HREF="stylelogin.css">
+</HEAD>
+<BODY style="background: lightgray;">
+  
+  <div class="container">
+    <label for="Name"><b>Boat Name</b></label>
+    <input id="nameB" type="text" placeholder="Enter Name" required>
+    <label for="Oars"><b>Oars</b></label>
+    <input id="oarsT" type="text" placeholder="Enter Oars" required>
+    <ul style="list-style: none;">
+          <li>Coxwain <input type="text" placeholder="Enter Coxwain" id="coxwain" required> </li>
+          <li id="r8">8 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster1"><option value="0">--Select Rower--</option></select></li>
+          <li id="r7">7 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster2"><option value="0">--Select Rower--</option></select></li>
+          <li id="r6">6 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster3"><option value="0">--Select Rower--</option></select></li>
+          <li id="r5">5 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster4"><option value="0">--Select Rower--</option></select></li>
+          <li id="r4">4 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster5"><option value="0">--Select Rower--</option></select></li>
+          <li id="r3">3 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster6"><option value="0">--Select Rower--</option></select></li>
+          <li id="r2">2 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster7"><option value="0">--Select Rower--</option></select></li>
+          <li id="r1">1 <select onchange="this.className=this.options[this.selectedIndex].className" class="" id="roster8"><option value="0">--Select Rower--</option></select></li>
+        </ul>
+    <button type="resetr" style="padding:10px;" onclick="add()">Add</button>
+     <label>&nbsp;</label>
+    <button type="reset" class="cancelbtn" onclick="cancel()">Cancel</button>
+    <label id="finish"></label>
+  </div>
+</BODY>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyC4yRQTqH8kprU56QhfVq0e5Yp6NXmzBrw",
+  authDomain: "b-a-b-7bbf8.firebaseapp.com",
+  databaseURL: "https://b-a-b-7bbf8.firebaseio.com",
+  projectId: "b-a-b-7bbf8",
+  storageBucket: "b-a-b-7bbf8.appspot.com",
+  messagingSenderId: "170330985238"
+};
+firebase.initializeApp(config);
+
+var Ref = firebase.database().ref().child("Tritons");
+
+    Ref.on('value',function(snapshot){
+        
+        var rowers = snapshot.child('Rowers/count').val();
+        for(var j = 1; j <= 8; j++){
+            var roster = document.getElementById('roster'+j); 
+            for (var i = 1; i <= rowers; i++){
+              var firebaseRef = firebase.database().ref().child("Tritons").child("Teammates").child(i);
+                firebaseRef.on('value',function(snapshot){
+                  var name = snapshot.child('name').val();
+                  var color = snapshot.child('color').val();
+                  var option = document.createElement("option");
+                  option.text = name;
+                  option.value = i;
+                  if(color == "lb"){
+                      option.setAttribute("class","lightblue");
+                   }
+                   else{
+                    if(color == "b"){
+                      option.setAttribute("class","blue");
+                    }
+                    else{
+                      if(color == "g"){
+                      option.setAttribute("class","green");
+                      }
+                      else{
+                      option.setAttribute("class","red");
+                      }
+                    }
+                   }
+                  roster.add(option);
+                 });
+        }
+        }       
+    });
+
+function add(){
+
+    var NRef = firebase.database().ref().child("Tritons");
+    
+    NRef.on('value',function(snapshot){
+
+      var boats = snapshot.child('NBoats/count').val();
+      var n = boats;
+
+      var FRef = firebase.database().ref().child("Tritons").child("Boats/"+n);
+
+      FRef.set({
+          name:document.getElementById('nameB').value,
+          oars:document.getElementById('oarsT').value,
+          coxwain:document.getElementById('coxwain').value,
+          r8: document.getElementById('roster8').options[document.getElementById('roster8').selectedIndex].value,
+          r7: document.getElementById('roster7').options[document.getElementById('roster7').selectedIndex].value,
+          r6: document.getElementById('roster6').options[document.getElementById('roster6').selectedIndex].value,
+          r5: document.getElementById('roster5').options[document.getElementById('roster5').selectedIndex].value,
+          r4: document.getElementById('roster4').options[document.getElementById('roster4').selectedIndex].value,
+          r3: document.getElementById('roster3').options[document.getElementById('roster3').selectedIndex].value,
+          r2: document.getElementById('roster2').options[document.getElementById('roster2').selectedIndex].value,
+          r1: document.getElementById('roster1').options[document.getElementById('roster1').selectedIndex].value
+      });
+
+    });
+
+    var Nref = firebase.database().ref('Tritons/NBoats/count');
+      var boats = 0;
+      Nref.transaction(function(boats) {
+        return (boats || 0) + 1;
+      });
+
+
+  window.location.replace("Index.html");
+
+}
+
+function cancel()
+{
+  window.location.replace("Index.html");
+}
+
+</script>
+</HTML>

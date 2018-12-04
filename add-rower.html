@@ -1,0 +1,95 @@
+<HTML LANG="es">
+<HEAD>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <LINK REL="stylesheet" TYPE="text/css" HREF="stylelogin.css">
+</HEAD>
+<BODY style="background: lightgray;">
+  
+  <div class="container">
+    <label for="Name"><b>Name</b></label>
+    <input id="nameT" type="text" placeholder="Enter Name" required>
+    <label for="Height"><b>Height</b></label>
+    <input id="heightT" type="text" placeholder="Enter Height" required>
+    <label for="Weight"><b>Weight</b></label>
+    <input id="weightT" type="text" placeholder="Enter Weight" required>
+    <label for="2K"><b>2k</b></label>
+    <input id="2kT" type="text" placeholder="Enter 2k" required>
+    <label for="Year"><b>Year</b></label>
+    <select id="year">
+        <option value="Fr">Fr</option>
+        <option value="Jr">Jr</option>
+        <option value="So">So</option>
+        <option value="Sr">Sr</option>
+     </select>
+     <label for="Color"><b>Color</b></label>
+     <select id="color">
+        <option value="r">Red</option>
+        <option value="g">Green</option>
+        <option value="b">Blue</option>
+        <option value="lb">LightBlue</option>
+     </select>
+     <label for="Rank"><b>Rank</b></label>
+     <input id="rankT" type="text" placeholder="Enter Rank" required>
+     <label>&nbsp;</label>
+    <button type="resetr" style="padding:10px;" onclick="add()">Add</button>
+     <label>&nbsp;</label>
+    <button type="reset" class="cancelbtn" onclick="cancel()">Cancel</button>
+    <label id="finish"></label>
+  </div>
+</BODY>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyC4yRQTqH8kprU56QhfVq0e5Yp6NXmzBrw",
+  authDomain: "b-a-b-7bbf8.firebaseapp.com",
+  databaseURL: "https://b-a-b-7bbf8.firebaseio.com",
+  projectId: "b-a-b-7bbf8",
+  storageBucket: "b-a-b-7bbf8.appspot.com",
+  messagingSenderId: "170330985238"
+};
+firebase.initializeApp(config);
+
+function add(){
+
+    var NRef = firebase.database().ref().child("Tritons");
+    
+    //var r = window.sessionStorage.getItem('n');
+
+    NRef.on('value',function(snapshot){
+
+      var rowers = snapshot.child('Rowers/count').val();
+      var n = rowers;
+
+      var FRef = firebase.database().ref().child("Tritons").child("Teammates/"+n);
+
+      FRef.set({
+
+          name: document.getElementById('nameT').value,
+          height: document.getElementById('heightT').value,
+          weight: document.getElementById('weightT').value,
+          k2: document.getElementById('2kT').value,
+          year: $('#year').val(),
+          rank: document.getElementById('rankT').value,
+          color: $('#color').val()
+      });
+
+    });
+
+    var Nref = firebase.database().ref('Tritons/Rowers/count');
+    var rowers = 0;
+    Nref.transaction(function(rowers) {
+      return (rowers || 0) + 1;
+    });
+
+  document.getElementById('finish').innerHTML="new rower added to the team!";
+}
+
+function cancel()
+{
+  window.location.replace("roster.html");
+}
+
+</script>
+</HTML>

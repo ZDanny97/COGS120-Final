@@ -1,0 +1,151 @@
+.column {
+    float: left;
+    width: 20%;
+}
+
+.column2 {
+    float: left;
+    width: 50%;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.middle{ 
+  margin: 0 auto; 
+  width: 100%; 
+}
+
+#pieces{ 
+  font-size: 200%;
+  text-align: center;
+}
+
+.container{
+    width:100%;
+    min-height: 100%;
+    padding-left:20%;
+    padding-top: 5%;
+    margin:0 auto;
+    overflow: scroll;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10% 20px;
+}
+
+.green{ background-color:lightgreen; }
+
+.blue{ background-color:blue; }
+
+.lightblue{ background-color:lightblue; }
+
+.red{ background-color:red; }
+
+#lightblue{
+    background: blue;
+}
+
+#red{
+    background: red;
+}
+
+#green{
+    background: green;
+}
+
+#bottomtext {
+    display: block;
+    text-align: center;
+    line-height: 150%;
+    font-size: .85em;
+}
+
+.boats li{
+  width: 60%;
+}
+
+#piecesul li{
+  margin: 0 0 4px 0
+}
+
+#roster li{
+  margin: 0 -60% 5% 0;
+  text-align: center;
+  font-size: 120%;
+}
+
+#matches li{
+  padding: 3%;
+  text-align: center;
+  font-size: 110%;
+}
+
+h1{
+    font-size: 200%;
+}
+
+html, body { min-height: 100%; padding-bottom: 15% }
+
+option{
+  font-size: 60%;
+}
+
+
+#lineup-container ul {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    margin: 0 auto; 
+    width: 100%; 
+}
+
+#roster li {
+    font-size: 200%;
+}
+
+ul {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    margin: 0 auto; 
+    width: 50%; 
+}
+
+
+* {
+    box-sizing: border-box;
+    font-size: 110%;
+}
+
+div *{
+  margin:0;
+}
+
+a {
+  margin:0;
+  padding:0;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    font-size: 200%;
+    text-align: center;
+}

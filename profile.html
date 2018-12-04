@@ -1,0 +1,67 @@
+<HTML LANG="es">
+<HEAD>
+  <div style="background: darkgray;">
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <LINK REL="stylesheet" TYPE="text/css" HREF="stylelogin.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
+  <hr>
+  </div>
+</HEAD>
+<BODY> 
+  <form>
+  <div class="container">
+    <label for="team"><b>Team</b></label>
+    <input id="team" type="text" placeholder="Enter Team" name="uname" required>
+    <label for="psw"><b>Password</b></label>
+    <input id="password" type="password" placeholder="Enter Password" name="psw" required>
+    <label class="switch">
+     <input type="checkbox" onclick="iscoach()">
+     <span class="slider round"></span>
+     <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coach</b>
+     </label>
+     <label>&nbsp;</label>
+    <button type="reset" style="padding:10px;" onclick="login()">Login</button>
+     <label>&nbsp;</label>
+    <button type="reset" class="cancelbtn" onclick="cancelbtn()">Cancel</button>
+  </div>
+</form>
+
+<script>
+  var coach = false;
+
+  function iscoach(){
+    if(coach == false){
+      coach = true;
+    }
+    else{
+      coach = false;
+    }
+  }
+
+  function login(){
+    if(document.getElementById("team").value== 'Tritons' && document.getElementById("password").value == 'ucsd'){
+      if(coach == true){
+        window.sessionStorage.setItem('user', 'Coach');
+        window.location = "Index.html";
+      }else{
+        window.sessionStorage.setItem('user', 'Rower');
+        window.location = "Index.html";
+      }
+    }
+    else{
+      coach=false;
+      if(document.getElementById("team").value == 'Tritons'){
+        alert("wrong password");
+      }else{
+        alert("Team doesn´t exist");
+      }
+    }
+  }
+
+  function cancelbtn(){
+    window.location = "Index.html";
+  }
+</script>
+</BODY>
+</HTML>

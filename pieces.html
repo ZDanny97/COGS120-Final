@@ -1,0 +1,244 @@
+<HTML LANG="es">
+<HEAD>
+  <div style="background: darkgray;">
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
+    <a href="profile.html"><img id="profile" src="" width="15%" class="right"></a>
+  <hr>
+  </div>
+</HEAD>
+<BODY style="background: lightgray;">
+ <div id="pieces" >
+    <ul id="matches" style="list-style: none;padding:3%;">
+    </ul>
+    <br>
+    <div id="add" style="display:none;">
+    <select name="option1" id="option1"><option value="0">--Select Boat--</option></select> VS <select name="option2" id="option2"><option value="0">--Select Boat--</option></select> Winner: <button id="winner1" onclick="winner1()" style="display:none;"></button><button id="winner2" onclick="winner2()" style="display:none;"></button><button id="draw" onclick="draw()" style="display:none;">Draw</button>
+    </div>  
+    <div id="addbutton" style="display:none;" onclick="addpiece()">
+      <button id="button">Add new piece</button>
+    </div>
+ </div>  
+</BODY>
+<FOOTER>
+  <div id="bottombuttons" style="background: darkgray;">
+    <div class="row">
+      <div class="column">
+         <a href="Index.html"><img src="Images/home.png" width="50%" class="center"><label id="bottomtext">Home</label></a>
+      </div>
+      <div class="column">
+         <a href="roster.html"><img src="Images/people.png" width="50%" class="center"><label id="bottomtext">Roster</label></a>
+      </div>
+      <div class="column">
+         <a href="pieces.html"><img src="Images/timer.png" width="50%" class="center"><label id="bottomtext">Pieces</label></a>
+      </div>
+      <div class="column">
+         <a href="calendar.html"><img src="Images/calendar.png" width="50%" class="center"><label id="bottomtext">Calendar</label></a>
+      </div>
+      <div class="column">
+         <a href="weather.html"><img src="Images/weather.png" width="50%" class="center"><label id="bottomtext">Weather</label></a>
+      </div>
+    </div>
+    <hr> 
+</FOOTER> 
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+// Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyC4yRQTqH8kprU56QhfVq0e5Yp6NXmzBrw",
+      authDomain: "b-a-b-7bbf8.firebaseapp.com",
+      databaseURL: "https://b-a-b-7bbf8.firebaseio.com",
+      projectId: "b-a-b-7bbf8",
+      storageBucket: "b-a-b-7bbf8.appspot.com",
+      messagingSenderId: "170330985238"
+    };
+    firebase.initializeApp(config);
+
+    var user = window.sessionStorage.getItem('user');
+
+    var Ref = firebase.database().ref().child("Tritons");
+
+    Ref.on('value',function(snapshot){
+      var boats = snapshot.child('NBoats/count').val();
+      var rowers = snapshot.child('Rowers/count').val();
+      var matches = snapshot.child('Matches/count').val();
+      for(var i=1; i<=matches; i++){
+          var boat1 = snapshot.child("Match").child(i).child('boat1').val();
+          var boat2 = snapshot.child("Match").child(i).child('boat2').val();
+          var win = snapshot.child("Match").child(i).child('win').val();
+          var label = document.createElement("li");
+          var div = document.getElementById("matches");
+          label.innerHTML=boat1 + " VS " + boat2 + " Winner: " + win;
+          div.appendChild(label);
+      }
+      var roster1 = document.getElementById('option1'); 
+      var roster2 = document.getElementById('option2'); 
+      for(var i=1 ; i<=boats ; i++)
+      {
+          var name = snapshot.child("Boats").child(i).child('name').val();
+          var option1 = document.createElement("option");
+          var option2 = document.createElement("option");
+          option1.text = name;
+          option2.text = name;
+          option1.value = i;
+          option2.value = i;
+          roster1.add(option1);
+          roster2.add(option2);
+          document.getElementById("winner1").text=option1.text;
+          document.getElementById("winner2").text=option2.text;
+      }
+    });
+
+var user = window.sessionStorage.getItem('user');
+var i3 =0;
+
+if(user != null){
+  if (user  == "Coach"){
+        document.getElementById("profile").src = "Images/C.png";
+        document.getElementById("addbutton").style.display = "unset";
+      }
+      else{
+        document.getElementById("profile").src = "Images/profile.png";
+      }
+}
+else{
+  window.location = "profile.html";
+  document.getElementById("profile").src = "Images/user.png";
+}
+
+document.addEventListener('DOMContentLoaded',function() {
+    document.querySelector('select[name="option1"]').onchange=changeEventHandler1;
+    document.querySelector('select[name="option2"]').onchange=changeEventHandler2;
+},false);
+
+function addpiece(){
+  if(i3==0){
+   document.getElementById("add").style.display = "unset";
+   document.getElementById("button").innerHTML = "Cancel";
+   i3=1;
+  }
+  else{
+   document.getElementById("add").style.display = "none";
+   document.getElementById("button").innerHTML = "Add new piece";
+   i3=0;
+  }
+}
+
+function changeEventHandler1(event) {
+    // You can use “this” to refer to the selected element.
+    if(document.getElementById('option1').selectedIndex != 0 && document.getElementById('option2').selectedIndex != 0){
+      document.getElementById("winner1").innerHTML=document.getElementById("option1").options[document.getElementById('option1').selectedIndex].innerHTML;
+      document.getElementById("winner2").innerHTML=document.getElementById("option2").options[document.getElementById('option2').selectedIndex].innerHTML;
+      document.getElementById("winner1").style.display="unset";
+      document.getElementById("winner2").style.display="unset";
+      document.getElementById("draw").style.display="unset";
+    }
+    else{
+      document.getElementById("winner1").style.display="none";
+      document.getElementById("winner2").style.display="none";
+      document.getElementById("draw").style.display="none";
+    }
+}
+
+function changeEventHandler2(event) {
+    // You can use “this” to refer to the selected element.
+    if(document.getElementById('option1').selectedIndex != 0 && document.getElementById('option2').selectedIndex != 0){
+      document.getElementById("winner1").innerHTML=document.getElementById("option1").options[document.getElementById('option1').selectedIndex].innerHTML;
+      document.getElementById("winner2").innerHTML=document.getElementById("option2").options[document.getElementById('option2').selectedIndex].innerHTML;
+      document.getElementById("draw").style.display="unset";
+      document.getElementById("winner1").style.display="unset";
+      document.getElementById("winner2").style.display="unset";
+    }
+    else{
+      document.getElementById("winner1").style.display="none";
+      document.getElementById("winner2").style.display="none";
+      document.getElementById("draw").style.display="none";
+    }
+}
+
+function winner1(){
+   var NRef = firebase.database().ref().child("Tritons");
+    
+    NRef.on('value',function(snapshot){
+
+      var matches = snapshot.child('Matches/count').val();
+      var n = matches;
+
+      var FRef = firebase.database().ref().child("Tritons").child("Match/"+n);
+
+      FRef.set({
+          boat1:document.getElementById('winner1').innerHTML,
+          boat2:document.getElementById('winner2').innerHTML,
+          win:document.getElementById('winner1').innerHTML
+      });
+
+    });
+
+    var Nref = firebase.database().ref('Tritons/Matches/count');
+      var boats = 0;
+      Nref.transaction(function(boats) {
+        return (boats || 0) + 1;
+      });
+
+
+  window.location.replace("pieces.html");
+}
+
+function winner2(){
+   var NRef = firebase.database().ref().child("Tritons");
+    
+    NRef.on('value',function(snapshot){
+
+      var matches = snapshot.child('Matches/count').val();
+      var n = matches;
+
+      var FRef = firebase.database().ref().child("Tritons").child("Match/"+n);
+
+      FRef.set({
+          boat1:document.getElementById('winner1').innerHTML,
+          boat2:document.getElementById('winner2').innerHTML,
+          win:document.getElementById('winner2').innerHTML
+      });
+
+    });
+
+    var Nref = firebase.database().ref('Tritons/Matches/count');
+      var boats = 0;
+      Nref.transaction(function(boats) {
+        return (boats || 0) + 1;
+      });
+
+
+  window.location.replace("pieces.html");
+}
+
+function draw(){
+   var NRef = firebase.database().ref().child("Tritons");
+    
+    NRef.on('value',function(snapshot){
+
+      var matches = snapshot.child('Matches/count').val();
+      var n = matches;
+
+      var FRef = firebase.database().ref().child("Tritons").child("Match/"+n);
+
+      FRef.set({
+          boat1:document.getElementById('winner1').innerHTML,
+          boat2:document.getElementById('winner2').innerHTML,
+          win: 'draw'
+      });
+
+    });
+
+    var Nref = firebase.database().ref('Tritons/Matches/count');
+      var boats = 0;
+      Nref.transaction(function(boats) {
+        return (boats || 0) + 1;
+      });
+
+
+  window.location.replace("pieces.html");
+}
+</script>
+</HTML>

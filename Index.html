@@ -1,0 +1,203 @@
+<HTML LANG="es">
+<HEAD>
+  <div style="background: darkgray;">
+   <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
+    <a href="profile.html"><img id="profile" src="" width="15%" class="right"></a>
+  <hr>
+  </div>
+</HEAD>
+<BODY >
+ <div id="container" > 
+  <div id="lineup-workout" style="background: lightgray; padding-top:3%">
+    <div class="middle">
+    <button type="button" id="lineup-button" style="background: gray; color: blue; margin-left:25%; font-size:170%; padding:3%;" onclick="lineup()">Lineups</button>
+    <button type="button" id="workout-button" style="background: lightgray; margin-left:6%; font-size:170%; padding:3%;" onclick="workout()">Notes</button>
+    </div>
+    <div class="container">
+      <div id="lineup-container" style="background: lightgray;">
+         <div id="add" style="display:none;"><a href="add-boat.html"><img src="Images/add.png" style="vertical-align:middle;" width="15%"></a><label style="font-size:150%;">Add New Boat</label>
+         </div>
+      </div>
+      <div id="workout-container" style="display:none; background: lightgray;">
+        <textarea id="notes" style="border:gray;" rows="10" cols="50" disabled>
+        </textarea>
+        <button id="editNotes" style="display:hidden" onclick="notes()">Edit Notes</button></li>
+      </div>
+    </div>  
+  <hr>    
+  </div>
+</div>  
+</BODY>
+<FOOTER>
+  <div id="bottombuttons" style="background: darkgray;">
+    <div class="row">
+      <div class="column">
+         <a href="Index.html"><img src="Images/home.png" width="50%" class="center"><label id="bottomtext">Home</label></a>
+      </div>
+      <div class="column">
+         <a href="roster.html"><img src="Images/people.png" width="50%" class="center"><label id="bottomtext">Roster</label></a>
+      </div>
+      <div class="column">
+         <a href="pieces.html"><img src="Images/timer.png" width="50%" class="center"><label id="bottomtext">Pieces</label></a>
+      </div>
+      <div class="column">
+         <a href="calendar.html"><img src="Images/calendar.png" width="50%" class="center"><label id="bottomtext">Calendar</label></a>
+      </div>
+      <div class="column">
+         <a href="weather.html"><img src="Images/weather.png" width="50%" class="center"><label id="bottomtext">Weather</label></a>
+      </div>
+    </div>
+    <hr> 
+</FOOTER>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+// Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyC4yRQTqH8kprU56QhfVq0e5Yp6NXmzBrw",
+      authDomain: "b-a-b-7bbf8.firebaseapp.com",
+      databaseURL: "https://b-a-b-7bbf8.firebaseio.com",
+      projectId: "b-a-b-7bbf8",
+      storageBucket: "b-a-b-7bbf8.appspot.com",
+      messagingSenderId: "170330985238"
+    };
+    firebase.initializeApp(config);
+
+    var user = window.sessionStorage.getItem('user');
+
+    var Ref = firebase.database().ref().child("Tritons");
+
+    Ref.on('value',function(snapshot){
+      var boats = snapshot.child('NBoats/count').val();
+      document.getElementById("notes").value = snapshot.child("note/text").val();
+
+       for (var i = 1; i <= boats; i++) {
+             var naux=8;
+             var id= i;
+             var name = snapshot.child('Boats').child(i).child('name').val();
+             if(name!=null){
+             var oars = snapshot.child('Boats').child(i).child('oars').val();
+             var coxwain = snapshot.child('Boats').child(i).child('coxwain').val();
+
+             var ul = document.createElement("ul");
+             ul.setAttribute("id", id);
+             ul.setAttribute("class", "boats");
+             ul.setAttribute("style", "list-style: none;");
+             var space = document.createElement("li");
+             space.setAttribute("style","padding-top:5%;");
+             ul.appendChild(space);
+             var boat = document.createElement("li");
+             boat.innerHTML = "Boat: "+name;
+             var button = document.createElement("button");
+             button.setAttribute("id","edit");
+             if(user  == "Coach"){
+                button.setAttribute("style","padding-left:2%;");
+             }
+             else{
+                button.setAttribute("style","padding-left:2%;display:none;");
+             }
+             button.innerHTML = 'Edit';
+             button.value=i;
+             button.setAttribute("onClick","edit(this.value)")
+             boat.appendChild(button);
+             ul.appendChild(boat);
+
+             var oar = document.createElement("li");
+             oar.innerHTML="Oars: "+oars;
+             ul.appendChild(oar);
+
+             var cox = document.createElement("li");
+             cox.innerHTML = "Coxwain: "+coxwain;
+             ul.appendChild(cox);
+
+             for (var j= 1;j<=8;j++){
+              for(var k=1; k<=8; k++){
+                  var look = "r"+k;
+                  var r = snapshot.child('Boats').child(i).child(look).val();
+                  if(j == r)
+                  {
+
+                    var li = document.createElement("li");
+                    var color = snapshot.child('Teammates').child(j).child('color').val();
+                    var rower = snapshot.child('Teammates').child(j).child('name').val();
+                    li.innerHTML=naux+": "+rower;
+
+                    if(color == "lb"){
+                          li.setAttribute("class","lightblue");
+                        }
+                        else{
+                            if(color == "b"){
+                              li.setAttribute("class","blue"); 
+                            }
+                            else{
+                                if(color == "g"){
+                                  li.setAttribute("class","green");
+                                  }
+                                  else{ 
+                                     li.setAttribute("class","red");
+                                  }
+                                }
+                            }
+                    ul.appendChild(li);
+                    naux--;
+                }
+              } 
+            }
+          var element = document.getElementById("lineup-container");
+          element.appendChild(ul);
+        }
+      }
+    });
+
+if(user != null){
+  if (user  == "Coach"){
+        document.getElementById("profile").src = "Images/C.png";
+        document.getElementById("add").style.display="unset";
+        document.getElementById("notes").disabled = false;
+        document.getElementById("editNotes").style.display="unset";
+      }
+      else{
+        document.getElementById("profile").src = "Images/profile.png";
+      }
+}
+else{
+  window.location = "profile.html";
+  document.getElementById("profile").src = "Images/user.png";
+}
+
+function lineup() {
+    document.getElementById("lineup-button").style.color= "blue";
+    document.getElementById("lineup-button").style.background= "gray";
+    document.getElementById("lineup-container").style.display="unset";
+    document.getElementById("workout-button").style.color= "black";
+    document.getElementById("workout-button").style.background= "lightgray";
+    document.getElementById("workout-container").style.display="none";
+}
+
+function workout() {
+    document.getElementById("workout-button").style.color= "blue";
+    document.getElementById("workout-button").style.background= "gray";
+    document.getElementById("workout-container").style.display="unset";
+    document.getElementById("lineup-button").style.color= "black";
+    document.getElementById("lineup-button").style.background= "lightgray";
+    document.getElementById("lineup-container").style.display="none";
+}
+
+function edit(val){
+
+    window.sessionStorage.setItem('boat', val);
+    window.location="edit-boat.html";
+}
+
+function notes(){
+   var notes = document.getElementById("notes").value;
+   var Ref = firebase.database().ref().child("Tritons/note");
+   Ref.set({
+         text:notes
+   });
+   location.reload();
+}
+
+</script>
+</HTML>
