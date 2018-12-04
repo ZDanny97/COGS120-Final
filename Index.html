@@ -1,6 +1,6 @@
 <HTML LANG="es">
 <HEAD>
-  <div style="background: darkgray;">
+  <div style="background: #1a8cff;">
    <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <a href="Index.html"><img src="Images/rowers.png" width="25%"class="center"></a>
@@ -12,8 +12,8 @@
  <div id="container" > 
   <div id="lineup-workout" style="background: lightgray; padding-top:3%">
     <div class="middle">
-    <button type="button" id="lineup-button" style="background: gray; color: blue; margin-left:25%; font-size:170%; padding:3%;" onclick="lineup()">Lineups</button>
-    <button type="button" id="workout-button" style="background: lightgray; margin-left:6%; font-size:170%; padding:3%;" onclick="workout()">Notes</button>
+    <button type="button" id="lineup-button" style="background: lightgray; color: blue; margin-left:25%; font-size:170%; padding:3%;" onclick="lineup()">Lineups</button>
+    <button type="button" id="workout-button" style="background: white; margin-left:6%; font-size:170%; padding:3%;" onclick="workout()">Notes</button>
     </div>
     <div class="container">
       <div id="lineup-container" style="background: lightgray;">
@@ -31,7 +31,7 @@
 </div>  
 </BODY>
 <FOOTER>
-  <div id="bottombuttons" style="background: darkgray;">
+  <div id="bottombuttons" style="background: white;">
     <div class="row">
       <div class="column">
          <a href="Index.html"><img src="Images/home.png" width="50%" class="center"><label id="bottomtext">Home</label></a>
@@ -168,19 +168,19 @@ else{
 
 function lineup() {
     document.getElementById("lineup-button").style.color= "blue";
-    document.getElementById("lineup-button").style.background= "gray";
+    document.getElementById("lineup-button").style.background= "lightgray";
     document.getElementById("lineup-container").style.display="unset";
     document.getElementById("workout-button").style.color= "black";
-    document.getElementById("workout-button").style.background= "lightgray";
+    document.getElementById("workout-button").style.background= "white";
     document.getElementById("workout-container").style.display="none";
 }
 
 function workout() {
     document.getElementById("workout-button").style.color= "blue";
-    document.getElementById("workout-button").style.background= "gray";
+    document.getElementById("workout-button").style.background= "lightgray";
     document.getElementById("workout-container").style.display="unset";
     document.getElementById("lineup-button").style.color= "black";
-    document.getElementById("lineup-button").style.background= "lightgray";
+    document.getElementById("lineup-button").style.background= "white";
     document.getElementById("lineup-container").style.display="none";
 }
 
